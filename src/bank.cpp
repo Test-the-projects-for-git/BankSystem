@@ -1,10 +1,11 @@
 #include "../includes/bank.hpp"
 
-const char* SystemBank::FileManager::extFile = ".txt";
+string SystemBank::LoginUser::m_username;
+string SystemBank::LoginUser::m_pin_code;
 
 SystemBank::Account SystemBank::ControlSystemAccount::addUser()
 {
-	Account tmp;
+	SystemBank::Account tmp;
 	cout << "Enter your name: ";
 	cin >> tmp.m_nameuser;
 	cout << "Enter yout family: ";
@@ -13,17 +14,17 @@ SystemBank::Account SystemBank::ControlSystemAccount::addUser()
 	cin >> tmp.m_code;
 	tmp.m_balance = 0;
 	cout << "A data was got!" << endl;
-	return Account(tmp);
+	return tmp;
 }
 
-void SystemBank::FileManager::SaveUser(const SystemBank::Account& acc)
+void SystemBank::FileManager::SaveUser(const Account& acc)
 {
-	ofstream outfile(acc.m_nameuser + extFile);
+	ofstream outfile(acc.m_nameuser + ".txt");
 
 	if (outfile.is_open())
 	{
-		outfile << acc.m_nameuser << ' ' << acc.m_familyuser
-			<< ' ' << acc.m_balance << ' ' << acc.m_code << endl;
+		outfile << acc.m_nameuser << endl << acc.m_code
+			<< endl << acc.m_familyuser << endl << acc.m_balance << endl;
 		cout << "For log file was saved" << endl;
 	}
 	else
@@ -34,24 +35,17 @@ void SystemBank::FileManager::SaveUser(const SystemBank::Account& acc)
 	outfile.close();
 }
 
-void SystemBank::FileManager::DeleteUser()
+void SystemBank::FileManager::DeleteUser(const string& nameuser)
 {
-	string name;
-	cout << "Enter name User:";
-	cin >> name;
-
-	/*used rerecord then when access denied*/
-	name.append(extFile);
-	fstream infile(name, std::ios::out);
+	/*we to truncate file if function remove not be worked*/
+	fstream infile(nameuser, std::ios::out, std::ios::trunc);
 
 	if (infile.is_open())
 	{
-		cout << "such user exist" << endl;
-		
-		
+		cout << "such user exist deleting pass success" << endl;
 
-		/*got error permission denied code not be work*/
-		/*if (remove("name.txt") == 0)
+		/*here expect got access denied*/
+		/*if (remove(nameuser + extFile) == 0)
 		{
 			cout << "account was deleted" << endl;
 		}
@@ -67,4 +61,36 @@ void SystemBank::FileManager::DeleteUser()
 
 	infile.close();
 
+}
+
+string SystemBank::LoginUser::LoginAccaount()
+{
+	string  username, pin_code;
+
+	cout << "Enter username: "; cin >> m_username;
+	cout << "Enter password: "; cin >> m_pin_code;
+	//Открытие файла с расширением
+	ifstream read(m_username + ".txt");
+	if (read.is_open())
+	{
+		//считать первую строку
+		getline(read, username);
+		//считать вторую строку
+		getline(read, pin_code);
+		//возвращение результата на правильность ввода логина пароля
+		if (username == m_username && pin_code == m_pin_code)
+		{
+			return m_username + ".txt";
+		}
+		else
+		{
+			return "";
+		}
+	}
+	else
+	{
+		cout << "Error openning a file" << endl;
+	}
+
+	return "";
 }

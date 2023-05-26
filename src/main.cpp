@@ -5,7 +5,10 @@ int main()
 {
 	/*Account tmp = ControlSystemAccount::addUser();
 	FileManager::SaveUser(tmp);*/
-	FileManager::DeleteUser();
+	string ret  = LoginUser::LoginAccaount();
+	FileManager::DeleteUser(ret);
+
+	
 
 	return 0;
 }

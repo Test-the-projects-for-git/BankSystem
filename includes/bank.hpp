@@ -1,17 +1,4 @@
-#include<iostream>
-#include<fstream>
-#include<string>
-#include<set>
-
-using std::cout;
-using std::cin;
-using std::endl;
-using std::fstream;
-using std::ofstream;
-using std::ifstream;
-using std::string;
-using std::set;
-
+#include "headers.hpp"
 
 namespace SystemBank {
 
@@ -19,8 +6,8 @@ namespace SystemBank {
 	{
 		string m_nameuser;
 		string m_familyuser;
-		__int64 m_balance;
-		__int16 m_code;
+		int64_t m_balance;
+		int16_t m_code;
 	}Account;
 
 	class NonCopyble 
@@ -39,7 +26,9 @@ namespace SystemBank {
 	public:
 		static Account addUser();
 
-	protected:
+
+
+	private:
 		ControlSystemAccount() = default;
 	};
 
@@ -47,13 +36,20 @@ namespace SystemBank {
 	class FileManager : private NonCopyble
 	{
 	public:
+		
 		static void SaveUser(const Account& acc);
-
-		static void DeleteUser();
-
+		static void DeleteUser(const string& nameuser);
 	private:
-		static const char* extFile;
 		FileManager() = default;
 	};
 
+	class LoginUser : private NonCopyble
+	{
+	public:
+		friend FileManager;
+		static string LoginAccaount();
+	private:
+		static string m_username;
+		static string m_pin_code;
+	};
 }

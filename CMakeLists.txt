@@ -6,4 +6,5 @@ set(CMAKE_CXX_STANDARD 17)
 
 add_executable (BankSystemApp src/main.cpp
 								src/bank.cpp
-								includes/bank.hpp)
+								includes/bank.hpp
+								includes/headers.hpp)
