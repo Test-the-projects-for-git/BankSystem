@@ -1,10 +1,11 @@
 #include "../includes/bank.hpp"
+using namespace SystemBank;
 
 int main()
 {
-	SystemBank::ControlSystemAccount::test();
-
-	
+	/*Account tmp = ControlSystemAccount::addUser();
+	FileManager::SaveUser(tmp);*/
+	FileManager::DeleteUser();
 
 	return 0;
 }
