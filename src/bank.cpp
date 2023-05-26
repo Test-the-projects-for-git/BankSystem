@@ -69,15 +69,15 @@ string SystemBank::LoginUser::LoginAccaount()
 
 	cout << "Enter username: "; cin >> m_username;
 	cout << "Enter password: "; cin >> m_pin_code;
-	//Открытие файла с расширением
+	//????? ??? ? ??????
 	ifstream read(m_username + ".txt");
 	if (read.is_open())
 	{
-		//считать первую строку
+		//???? ??? ???
 		getline(read, username);
-		//считать вторую строку
+		//???? ??? ???
 		getline(read, pin_code);
-		//возвращение результата на правильность ввода логина пароля
+		//?????? ????? ? ??????? ??? ??? ???
 		if (username == m_username && pin_code == m_pin_code)
 		{
 			return m_username + ".txt";
