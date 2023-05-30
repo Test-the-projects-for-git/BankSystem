@@ -2,6 +2,8 @@
 
 namespace SystemBank {
 
+
+	/*Struct Users*/
 	typedef struct Account 
 	{
 		string m_nameuser;
@@ -10,6 +12,10 @@ namespace SystemBank {
 		int16_t m_code;
 	}Account;
 
+	/*Main menu*/
+	void MainMenu(void);
+
+	/*template for create single instance the class*/
 	class NonCopyble {
 	public:
 		NonCopyble() = default;
@@ -23,9 +29,8 @@ namespace SystemBank {
 	class ControlSystemAccount : private NonCopyble{
 	public:
 		static Account addUser();
-		static Account readUser(const string& username);
+		static void ServerMenu(void);
 	private:
-		static ifstream infile;
 		ControlSystemAccount() = default;
 	};
 
@@ -34,8 +39,9 @@ namespace SystemBank {
 	public:
 		
 		static void SaveUser(const Account& acc);
+		static Account ReadUser(const string& username);
 		static void DeleteUser(const string& nameuser);
-		static void ResaveUser(const string&);
+		static void ResaveUser(const Account& currentuser);
 	private:
 		FileManager() = default;
 	};
@@ -44,7 +50,6 @@ namespace SystemBank {
 	class LoginUser : private NonCopyble
 	{
 	public:
-		friend FileManager;
 		static string LoginAccaount();
 	private:
 		static string m_username;
@@ -58,4 +63,8 @@ namespace SystemBank {
 		static void UserMenu(void);
 
 	};
+
+	/*secondary functions*/
+	string saveName(const string& nameuser);
+
 }

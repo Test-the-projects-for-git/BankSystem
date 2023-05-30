@@ -1,9 +1,11 @@
 #include "../includes/bank.hpp"
 
-/*Defined Varibles of classes*/
+/*Defined Varibles of classes and other varibles*/
 string SystemBank::LoginUser::m_username;
 string SystemBank::LoginUser::m_pin_code;
-ifstream SystemBank::ControlSystemAccount::infile;
+
+uint8_t choose = '0';
+uint8_t act = '0';
 
 /*Functions to communication with Main System*/
 SystemBank::Account SystemBank::ControlSystemAccount::addUser()
@@ -13,17 +15,24 @@ SystemBank::Account SystemBank::ControlSystemAccount::addUser()
 	cin >> tmp.m_nameuser;
 	cout << "Enter yout family: ";
 	cin >> tmp.m_familyuser;
-	cout << "Come up with a four-digit pin code";
+	cout << "Come up with a four-digit pin code: ";
 	cin >> tmp.m_code;
 	tmp.m_balance = 0;
-	cout << "A data was got!" << endl;
+	cout << "The data was got!" << endl;
 	return tmp;
 }
 
-SystemBank::Account SystemBank::ControlSystemAccount::readUser(const string& username)
+
+void SystemBank::ControlSystemAccount::ServerMenu()
+{
+	cout << "1. add user" << endl;
+	cout << "2. delete user" << endl;
+}
+
+SystemBank::Account SystemBank::FileManager::ReadUser(const string& username)
 {
 	Account tmp;
-	infile.open(username);
+	ifstream infile(username);
 	if (infile.is_open())
 	{
 		infile >> tmp.m_nameuser >> tmp.m_code >> tmp.m_familyuser >> tmp.m_balance;
@@ -37,6 +46,7 @@ SystemBank::Account SystemBank::ControlSystemAccount::readUser(const string& use
 
 	return tmp;
 }
+
 
 /*Here FileManager for store data and delete and e t c*/
 void SystemBank::FileManager::SaveUser(const Account& acc)
@@ -60,7 +70,7 @@ void SystemBank::FileManager::SaveUser(const Account& acc)
 void SystemBank::FileManager::DeleteUser(const string& nameuser)
 {
 	/*we to truncate file if function remove not be worked*/
-	fstream infile(nameuser, std::ios::out, std::ios::trunc);
+	fstream infile(nameuser + ".txt", std::ios::out, std::ios::trunc);
 
 	if (infile.is_open())
 	{
@@ -83,6 +93,29 @@ void SystemBank::FileManager::DeleteUser(const string& nameuser)
 
 	infile.close();
 
+}
+
+void SystemBank::FileManager::ResaveUser(const Account& currentuser)
+{
+	ofstream reoutfile(currentuser.m_nameuser + ".txt", std::ios::out);
+
+	if (reoutfile.is_open())
+	{
+		cout << "The file was open with success" << endl;
+
+		reoutfile << currentuser.m_nameuser << endl
+			<< currentuser.m_code << endl
+			<< currentuser.m_familyuser << endl
+			<< currentuser.m_balance << endl;
+
+		cout << "Data is changed" << endl;
+	}
+	else
+	{
+		cout << "Error changed the data" << endl;
+	}
+
+	reoutfile.close();
 }
 
 /*System to access to users*/
@@ -143,4 +176,18 @@ void SystemBank::UserInterface::UserMenu()
 		<< "3-top up card balance" << endl
 		<< "4-cash out balance" << endl
 		<< "5-sum deposit" << endl;
+}
+
+
+/*function wich to save name user*/
+string SystemBank::saveName(const string& username)
+{
+	return username;
+}
+
+/*Main Menu of the programm*/
+void SystemBank::MainMenu(void)
+{
+	cout << "1. Server" << endl;
+	cout << "2. Client" << endl;
 }
