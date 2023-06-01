@@ -12,8 +12,7 @@ namespace SystemBank {
 		int16_t m_code;
 	}Account;
 
-	/*Main menu*/
-	void MainMenu(void);
+	
 
 	/*template for create single instance the class*/
 	class NonCopyble {
@@ -60,11 +59,14 @@ namespace SystemBank {
 	public:
 		static void ShowData(const Account& currentUser);
 		static void EditData(Account& currentUser);
+		static void UpBalance(Account& currentUser);
+		static void CashOut(Account& currentUser);
 		static void UserMenu(void);
 
 	};
 
 	/*secondary functions*/
+	void MainMenu(void);
 	string saveName(const string& nameuser);
-
+	bool checkName(const string& nameuser);
 }

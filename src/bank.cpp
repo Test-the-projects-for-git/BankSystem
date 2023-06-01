@@ -16,7 +16,7 @@ SystemBank::Account SystemBank::ControlSystemAccount::addUser()
 	cout << "Enter yout family: ";
 	cin >> tmp.m_familyuser;
 	cout << "Come up with a four-digit pin code: ";
-	cin >> tmp.m_code;
+	cin >> tmp.m_code;	/*here need add check proper enter the pin-code*/
 	tmp.m_balance = 0;
 	cout << "The data was got!" << endl;
 	return tmp;
@@ -39,7 +39,7 @@ SystemBank::Account SystemBank::FileManager::ReadUser(const string& username)
 	}
 	else
 	{
-		cout << "Error read the file!" << endl;
+		cout << "Error read an user" << endl;
 	}
 
 	infile.close();
@@ -57,11 +57,10 @@ void SystemBank::FileManager::SaveUser(const Account& acc)
 	{
 		outfile << acc.m_nameuser << endl << acc.m_code
 			<< endl << acc.m_familyuser << endl << acc.m_balance << endl;
-		cout << "For log file was saved" << endl;
 	}
 	else
 	{
-		perror("Errof create file");
+		perror("Errof save user");
 	}
 
 	outfile.close();
@@ -101,7 +100,6 @@ void SystemBank::FileManager::ResaveUser(const Account& currentuser)
 
 	if (reoutfile.is_open())
 	{
-		cout << "The file was open with success" << endl;
 
 		reoutfile << currentuser.m_nameuser << endl
 			<< currentuser.m_code << endl
@@ -141,7 +139,7 @@ string SystemBank::LoginUser::LoginAccaount()
 	}
 	else
 	{
-		cout << "Error openning a file" << endl;
+		cout << "Access is denny repeat try" << endl;
 	}
 
 	return "";
@@ -159,14 +157,31 @@ void SystemBank::UserInterface::ShowData(const Account& currentUser)
 
 void SystemBank::UserInterface::EditData(Account& currentUser)
 {
-	cout << "Change your name." << endl;
+	cout << "Change your name: ";
 	cin >> currentUser.m_nameuser;
-	cout << "Change your family." << endl;
+	cout << "Change your family: ";
 	cin >> currentUser.m_familyuser;
-	cout << "Change your pin - code" << endl;
-	cin >> currentUser.m_code;
+	cout << "Change your pin - code: ";
+	cin >> currentUser.m_code;	/*check pin-code*/
 
 	cout << "Data was changed" << endl;
+}
+
+void SystemBank::UserInterface::UpBalance(Account& currentUser)
+{
+	cout << "Input the summ you want to deposit: ";
+	cin >> currentUser.m_balance;	/*check negative value*/
+	cout << "Done" << endl;
+}
+
+void SystemBank::UserInterface::CashOut(Account& currentUser)
+{
+	size_t tmp;
+	cout << "Input the summ you want take off: ";
+	cin >> tmp;
+	currentUser.m_balance = currentUser.m_balance - tmp;	/*check negative value*/
+	cout << "Done" << endl;
+
 }
 
 void SystemBank::UserInterface::UserMenu()
@@ -174,8 +189,8 @@ void SystemBank::UserInterface::UserMenu()
 	cout << "1-Show info about an account" << endl
 		<< "2-Change info of an account" << endl
 		<< "3-top up card balance" << endl
-		<< "4-cash out balance" << endl
-		<< "5-sum deposit" << endl;
+		<< "4-cash out balance" << endl << endl;
+	cout << "Your choose: ";
 }
 
 
@@ -190,4 +205,9 @@ void SystemBank::MainMenu(void)
 {
 	cout << "1. Server" << endl;
 	cout << "2. Client" << endl;
+}
+
+bool SystemBank::checkName(const string& name)
+{
+	return (name == "") ? false : true;
 }
