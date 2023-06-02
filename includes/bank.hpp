@@ -9,7 +9,7 @@ namespace SystemBank {
 		string m_nameuser;
 		string m_familyuser;
 		int64_t m_balance;
-		int16_t m_code;
+		string m_code;
 	}Account;
 
 	
@@ -58,15 +58,26 @@ namespace SystemBank {
 	class UserInterface : private NonCopyble {
 	public:
 		static void ShowData(const Account& currentUser);
+		static void ViewBalance(const Account& currentUser);
 		static void EditData(Account& currentUser);
 		static void UpBalance(Account& currentUser);
-		static void CashOut(Account& currentUser);
+		static int64_t CashOut(Account& currentUser);
 		static void UserMenu(void);
 
 	};
 
-	/*secondary functions*/
+}
+
+namespace SecondaryFunction {
+	const int MILLION = 1000000;
+	const int TO_CODE = 4;
+	const char ZERO = '0';
+	const char NINE = '9';
+	
 	void MainMenu(void);
 	string saveName(const string& nameuser);
 	bool checkName(const string& nameuser);
+	bool checkPinCode(const string& pincode);
+	bool checkBalance(const int64_t& balance);
+	bool checkCashOut(const int64_t& balance);
 }

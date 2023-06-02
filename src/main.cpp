@@ -1,5 +1,6 @@
 #include "../includes/bank.hpp"
 using namespace SystemBank;
+using namespace SecondaryFunction;
 
 extern uint8_t choose;
 extern uint8_t act;
@@ -20,7 +21,17 @@ int main()
 			if (act == '1')	/*Add User*/
 			{
 				Account tmp = ControlSystemAccount::addUser();
-				FileManager::SaveUser(tmp);
+
+				if (checkPinCode(tmp.m_code))
+				{
+					FileManager::SaveUser(tmp);
+				}
+				else
+				{
+					cout << "The pin-code must be no less than and no more four digits." << endl;
+				}
+
+				
 			}
 			else if (act == '2')	/*Delete User*/
 			{
@@ -50,7 +61,7 @@ int main()
 			else
 			{
 				cout << "In Access denny" << endl;
-				main();
+				break;
 			}
 
 			/*UserMenu*/
@@ -70,21 +81,47 @@ int main()
 			}
 			else if (act == '3')
 			{
-				/*Up balance*/
+				/*Up balance here add function on verify propper input balance*/
 				UserInterface::UpBalance(currentuser);
-				FileManager::ResaveUser(currentuser);
+				if (checkBalance(currentuser.m_balance))
+				{
+					FileManager::ResaveUser(currentuser);
+				}
+				else
+				{
+					cout << "You balance not should be less zero or equal zero also great million" << endl;
+				}
+				
 			}
 			else if (act == '4')
 			{
-				UserInterface::CashOut(currentuser);
-				FileManager::ResaveUser(currentuser);
+				/*Cash out balance similary how Up Balance*/
+				int64_t tmp = UserInterface::CashOut(currentuser);
+				if (SecondaryFunction::checkCashOut(tmp))
+				{
+					FileManager::ResaveUser(currentuser);
+				}
+				else
+				{
+					cout << "On your card not sufficient means! " << endl;
+				}
+				
+			}
+			else if (act == '5')
+			{
+				UserInterface::ViewBalance(currentuser);
+			}
+			else
+			{
+				cout << "Not propper input" << endl;
 			}
 		}
 		else
 		{
-			cout << "Not propper value you should repeat try or exit programm."<< endl;
+			cout << "Not propper input" << endl;
 		}
-		cout << "Repeat is programm y-yes / n - not:";
+		
+
 		cin >> choose;
 		system("cls");
 	} while (choose != 'n');

@@ -18,7 +18,7 @@ SystemBank::Account SystemBank::ControlSystemAccount::addUser()
 	cout << "Come up with a four-digit pin code: ";
 	cin >> tmp.m_code;	/*here need add check proper enter the pin-code*/
 	tmp.m_balance = 0;
-	cout << "The data was got!" << endl;
+	cout << "The data was got by now going check!" << endl;
 	return tmp;
 }
 
@@ -119,10 +119,23 @@ void SystemBank::FileManager::ResaveUser(const Account& currentuser)
 /*System to access to users*/
 string SystemBank::LoginUser::LoginAccaount()
 {
-	string  username, pin_code;
+	string  username;
+	string pin_code;
 
 	cout << "Enter your name: "; cin >> m_username;
 	cout << "Enter your pin code: "; cin >> m_pin_code;
+
+	if (SecondaryFunction::checkPinCode(m_pin_code))
+	{
+		cout << "ok" << endl;
+	}
+	else
+	{
+		cout << "not ok" << endl;
+	}
+
+	
+
 	ifstream read(m_username + ".txt");
 	if (read.is_open())
 	{
@@ -146,13 +159,17 @@ string SystemBank::LoginUser::LoginAccaount()
 }
 
 /*User interface*/
-
 void SystemBank::UserInterface::ShowData(const Account& currentUser)
 {
 	cout << "You name: " << currentUser.m_nameuser << endl
 		<< "You code: " << currentUser.m_code << endl
 		<< "You family: " << currentUser.m_familyuser << endl
 		<< "Your balance: " << currentUser.m_balance << endl;
+}
+
+void SystemBank::UserInterface::ViewBalance(const Account& currentUser)
+{
+	cout << "Your balance: " << currentUser.m_balance << endl;
 }
 
 void SystemBank::UserInterface::EditData(Account& currentUser)
@@ -174,14 +191,14 @@ void SystemBank::UserInterface::UpBalance(Account& currentUser)
 	cout << "Done" << endl;
 }
 
-void SystemBank::UserInterface::CashOut(Account& currentUser)
+int64_t SystemBank::UserInterface::CashOut(Account& currentUser)
 {
 	size_t tmp;
 	cout << "Input the summ you want take off: ";
 	cin >> tmp;
 	currentUser.m_balance = currentUser.m_balance - tmp;	/*check negative value*/
 	cout << "Done" << endl;
-
+	return currentUser.m_balance;
 }
 
 void SystemBank::UserInterface::UserMenu()
@@ -189,25 +206,54 @@ void SystemBank::UserInterface::UserMenu()
 	cout << "1-Show info about an account" << endl
 		<< "2-Change info of an account" << endl
 		<< "3-top up card balance" << endl
-		<< "4-cash out balance" << endl << endl;
+		<< "4-cash out balance" << endl
+		<< "5-View your balance" << endl << endl;
 	cout << "Your choose: ";
 }
 
 
 /*function wich to save name user*/
-string SystemBank::saveName(const string& username)
+string SecondaryFunction::saveName(const string& username)
 {
 	return username;
 }
 
 /*Main Menu of the programm*/
-void SystemBank::MainMenu(void)
+void SecondaryFunction::MainMenu(void)
 {
 	cout << "1. Server" << endl;
 	cout << "2. Client" << endl;
 }
 
-bool SystemBank::checkName(const string& name)
+/*check propper the name user*/
+bool SecondaryFunction::checkName(const string& name)
 {
 	return (name == "") ? false : true;
+}
+
+bool SecondaryFunction::checkPinCode(const string& pincode)
+{
+	if (pincode.size() < TO_CODE || pincode.size() > TO_CODE)
+	{
+		return false;
+	}
+	else
+	{
+		for (size_t i = 0; i < pincode.size(); i++)
+		{
+			if (pincode[i] < ZERO || pincode[i] > NINE) return false;
+		}
+	}
+	
+	return true;
+}
+
+bool SecondaryFunction::checkBalance(const int64_t& balance)
+{
+	return (balance <= ZERO || balance > MILLION) ? false : true;
+}
+
+bool SecondaryFunction::checkCashOut(const int64_t& balance)
+{
+	return (balance < ZERO) ? false : true;
 }
