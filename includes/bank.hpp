@@ -68,16 +68,16 @@ namespace SystemBank {
 
 }
 
+/*is functions using for verify input data*/
 namespace SecondaryFunction {
 	const int MILLION = 1000000;
 	const int TO_CODE = 4;
 	const char ZERO = '0';
 	const char NINE = '9';
-	
 	void MainMenu(void);
-	string saveName(const string& nameuser);
-	bool checkName(const string& nameuser);
-	bool checkPinCode(const string& pincode);
-	bool checkBalance(const int64_t& balance);
-	bool checkCashOut(const int64_t& balance);
+	const bool checkName(const string& name);
+	const bool checkPinCode(const string& pincode);
+	const bool checkBalance(const int64_t& balance);
+	const bool checkCashOut(const int64_t& balance);
+
 }

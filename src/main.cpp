@@ -5,9 +5,10 @@ using namespace SecondaryFunction;
 extern uint8_t choose;
 extern uint8_t act;
 
+
 int main()
 {
-	
+
 
 	do
 	{
@@ -121,7 +122,7 @@ int main()
 			cout << "Not propper input" << endl;
 		}
 		
-
+		cout << "Y - repeat programm N - exit programm you choose:";
 		cin >> choose;
 		system("cls");
 	} while (choose != 'n');

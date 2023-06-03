@@ -212,12 +212,6 @@ void SystemBank::UserInterface::UserMenu()
 }
 
 
-/*function wich to save name user*/
-string SecondaryFunction::saveName(const string& username)
-{
-	return username;
-}
-
 /*Main Menu of the programm*/
 void SecondaryFunction::MainMenu(void)
 {
@@ -225,35 +219,40 @@ void SecondaryFunction::MainMenu(void)
 	cout << "2. Client" << endl;
 }
 
+/*saved name user*/
+const string saveName (const string& name)
+{
+	return name;
+};
+
 /*check propper the name user*/
-bool SecondaryFunction::checkName(const string& name)
+const bool SecondaryFunction::checkName (const string& name)
 {
 	return (name == "") ? false : true;
 }
 
-bool SecondaryFunction::checkPinCode(const string& pincode)
+/*verify propper input pin code*/
+const bool SecondaryFunction::checkPinCode (const string& pincode)
 {
 	if (pincode.size() < TO_CODE || pincode.size() > TO_CODE)
 	{
-		return false;
+				return false;
 	}
-	else
-	{
-		for (size_t i = 0; i < pincode.size(); i++)
-		{
-			if (pincode[i] < ZERO || pincode[i] > NINE) return false;
-		}
-	}
-	
-	return true;
-}
 
-bool SecondaryFunction::checkBalance(const int64_t& balance)
+	for (size_t i = 0; i < pincode.size(); i++)
+	{
+					if (pincode[i] < ZERO || pincode[i] > NINE) return false;
+	}
+		return true;
+}
+/*verify propper input balance*/
+const bool SecondaryFunction::checkBalance (const int64_t& balance)
 {
 	return (balance <= ZERO || balance > MILLION) ? false : true;
 }
 
-bool SecondaryFunction::checkCashOut(const int64_t& balance)
+/*verify propper output balance*/
+const bool SecondaryFunction::checkCashOut (const int64_t& balance)
 {
-	return (balance < ZERO) ? false : true;
+		return (balance < ZERO) ? false : true;
 }
