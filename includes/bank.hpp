@@ -75,6 +75,7 @@ namespace SecondaryFunction {
 	const char ZERO = '0';
 	const char NINE = '9';
 	void MainMenu(void);
+	const string saveName(const string& name);
 	const bool checkName(const string& name);
 	const bool checkPinCode(const string& pincode);
 	const bool checkBalance(const int64_t& balance);

@@ -51,71 +51,75 @@ int main()
 		{
 			/*Login user and check user*/
 			cout << "For entry into account record input your name and pin code" << endl;
-
-			string username  = LoginUser::LoginAccaount();
-			Account currentuser  = FileManager::ReadUser(username);
-
-			if (checkName(currentuser.m_nameuser))
+			string username = LoginUser::LoginAccaount();
+			Account currentuser = FileManager::ReadUser(username);
+			while (choose != 'n')
 			{
-				cout << "Access is allowed"<<endl;
-			}
-			else
-			{
-				cout << "In Access denny" << endl;
-				break;
-			}
-
-			/*UserMenu*/
-			UserInterface::UserMenu();
-			cin >> act;
-			if (act == '1')
-			{
-
-				UserInterface::ShowData(currentuser);	/*Show data*/
-			}
-			else if (act == '2')
-			{
-				string othername = saveName(currentuser.m_nameuser);
-				UserInterface::EditData(currentuser);	/*Edit data*/
-				FileManager::ResaveUser(currentuser);
-				FileManager::DeleteUser(othername);
-			}
-			else if (act == '3')
-			{
-				/*Up balance here add function on verify propper input balance*/
-				UserInterface::UpBalance(currentuser);
-				if (checkBalance(currentuser.m_balance))
+				if (checkName(currentuser.m_nameuser))
 				{
-					FileManager::ResaveUser(currentuser);
+					cout << "Access is allowed" << endl;
 				}
 				else
 				{
-					cout << "You balance not should be less zero or equal zero also great million" << endl;
+					cout << "In Access denny" << endl;
+					break;
 				}
-				
-			}
-			else if (act == '4')
-			{
-				/*Cash out balance similary how Up Balance*/
-				int64_t tmp = UserInterface::CashOut(currentuser);
-				if (SecondaryFunction::checkCashOut(tmp))
+
+				/*UserMenu*/
+				UserInterface::UserMenu();
+				cin >> act;
+				if (act == '1')
 				{
+
+					UserInterface::ShowData(currentuser);	/*Show data*/
+				}
+				else if (act == '2')
+				{
+					string othername = saveName(currentuser.m_nameuser);
+					UserInterface::EditData(currentuser);	/*Edit data*/
 					FileManager::ResaveUser(currentuser);
+					FileManager::DeleteUser(othername);
+				}
+				else if (act == '3')
+				{
+					/*Up balance here add function on verify propper input balance*/
+					UserInterface::UpBalance(currentuser);
+					if (checkBalance(currentuser.m_balance))
+					{
+						FileManager::ResaveUser(currentuser);
+					}
+					else
+					{
+						cout << "You balance not should be less zero or equal zero also great million" << endl;
+					}
+
+				}
+				else if (act == '4')
+				{
+					/*Cash out balance similary how Up Balance*/
+					int64_t tmp = UserInterface::CashOut(currentuser);
+					if (SecondaryFunction::checkCashOut(tmp))
+					{
+						FileManager::ResaveUser(currentuser);
+					}
+					else
+					{
+						cout << "On your card not sufficient means! " << endl;
+					}
+
+				}
+				else if (act == '5')
+				{
+					UserInterface::ViewBalance(currentuser);
 				}
 				else
 				{
-					cout << "On your card not sufficient means! " << endl;
+					cout << "Not propper input" << endl;
 				}
-				
+				cout << "Repeat y/n";
+				cin >> choose;
 			}
-			else if (act == '5')
-			{
-				UserInterface::ViewBalance(currentuser);
-			}
-			else
-			{
-				cout << "Not propper input" << endl;
-			}
+
 		}
 		else
 		{
